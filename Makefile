@@ -1,13 +1,13 @@
 CC = g++
 CFLAGS = -Wall -std=c++14 
 FLAGS = -lssl -lcrypto
-DEPS = header.h
-OBJ = mTorrentGenerator.o main.o
+DEPS = header.h clientglobal.h
+OBJ = mTorrentGenerator.o clientglobal.o client.o
 
 %.o: %.cpp $(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-torrent: $(OBJ)
+client: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(FLAGS)
 
 clean:
