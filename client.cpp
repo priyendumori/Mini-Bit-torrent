@@ -16,17 +16,59 @@ void initializeGlobalVariables(string client_IP_port, string t1_IP_port, string 
     tracker2Port=t2_IP_port.substr(index+1,4);
 }
 
+string stringhash(string s){
+    unsigned char hashbuf[20]; // == 20
+    unsigned char hash[40];
+
+    SHA1((unsigned char *)s.c_str(), s.length() , hashbuf);
+
+    //cout<<buffer<<endl;
+
+    for(int i=0;i<20;i++){
+        sprintf((char *)&(hash[i*2]), "%02x",hashbuf[i]);            
+    }
+
+    string hashstring((char *)hash);
+    return hashstring;
+}
+
 void shareDetailsOfExistingTorrent(){
     // scan .mtorrent folder
     // share details of each .mtorrent file to tracker
 }
 
-void notifyTracker(){
+string getStringToSend(string mtorrentName){
+    string send;
+    ifstream mt;
+    mt.open(mtorrentName);
+    string path,hashOfHash;
+    for(int i=0;i<5;i++){
+        string temp;
+        getline(mt, temp);
+        if(i==2){
+            path=temp;
+        }
+        if(i==4){
+            hashOfHash=stringhash(temp);
+        }
+    }
+
+    send=hashOfHash+" ";
+    send+=path+" ";
+    send+=clientIP+" ";
+    send+=clientPort;
+
+    return send;
+}
+
+void notifyTracker(string mtorrentName){
+
+    string sendstring = getStringToSend(mtorrentName);
 
     struct sockaddr_in address; 
     int sock = 0, valread; 
     struct sockaddr_in serv_addr; 
-    char *hello = "shared..."; 
+    // char *hello = "shared..."; 
     char buffer[1024] = {0}; 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
     { 
@@ -53,7 +95,7 @@ void notifyTracker(){
     } 
     cout<<"connected"<<endl;
     cout<<"sending"<<endl;
-    send(sock , hello , strlen(hello) , 0 ); 
+    send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     printf("Hello message sent\n"); 
     valread = read( sock , buffer, 1024); 
     printf("%s\n",buffer );  
@@ -61,7 +103,7 @@ void notifyTracker(){
 
 void share(string filePath, string mtorrentName){
     createTorrentFile(mtorrentName, filePath);
-    notifyTracker();
+    notifyTracker(mtorrentName);
 }
 
 int main(int argc, char **argv){
