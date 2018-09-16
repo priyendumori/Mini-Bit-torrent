@@ -1,8 +1,4 @@
-#include <bits/stdc++.h>
-#include <fstream>
-#include <sys/stat.h>
-#include <openssl/sha.h>
-using namespace std;
+#include "header.h"
 
 long long getFileSize(string file){
     struct stat sb;
@@ -60,9 +56,4 @@ void createTorrentFile(string torrentFileName, string filePath){
 
     mtfile.close();
 
-}
-
-int main(){
-    createTorrentFile("ddf", "CLRS.pdf");
-    return 0;
 }
