@@ -1,18 +1,63 @@
 #include "header.h"
+#include "trackerglobal.h"
 
-int main(){
-    int server_fd, new_socket, valread; 
+map<string, map<string, string> > seedermap; // map< hash, map<socket, file>>
+
+void insert(char buffer[], bool callfromfile){
+    ofstream seeders;
+    string bufback(buffer);
+
+    char *token = strtok(buffer, "|"); 
+    // Keep printing tokens while one of the 
+    // delimiters present in str[]. 
+    vector<string> s;
+    while (token != NULL){ 
+        s.push_back(token);
+        token = strtok(NULL, "|"); 
+    } 
+    // seedermap[s[0]].push_back({s[1], s[2]});
+    if(seedermap.find(s[0]) == seedermap.end() ){
+        seedermap[s[0]][s[2]]=s[1];
+        if(!callfromfile){
+            seeders.open(seeder_list.c_str(), ios::app);
+            seeders<< bufback <<endl;
+            seeders.close();
+        }
+    }
+    else{
+        if(seedermap[s[0]].find(s[2]) == seedermap[s[0]].end() ){
+            seedermap[s[0]][s[2]]=s[1];
+            if(!callfromfile){
+                seeders.open(seeder_list.c_str(), ios::app);
+                seeders<< bufback <<endl;
+                seeders.close();
+            }
+        }
+    }
+}
+
+void loadSeederFromFile(){
+    ifstream seeders;
+    seeders.open(seeder_list.c_str());
+    
+    string temp;
+    while(getline(seeders, temp)){
+        insert((char *)temp.c_str(), true);
+    }
+    seeders.close();
+}
+
+int connect(){
+    int server_fd, new_socket; 
     struct sockaddr_in address; 
     int opt = 1; 
     int addrlen = sizeof(address); 
-    char buffer[1024] = {0}; 
-    char *hello = "Hello from server"; 
+    
     
     cout<<"start"<<endl;
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
-    {
-         
+    {   
         perror("socket failed"); 
         exit(EXIT_FAILURE); 
     } 
@@ -50,8 +95,41 @@ int main(){
         exit(EXIT_FAILURE); 
     } 
     cout<<"accepted"<<endl;
+    return new_socket;
+}
+
+int main(int argc, char **argv){
+
+    if(argc < 4){
+        cout<<"too few arguments"<<endl;
+        return 1;
+    }
+    string mytracker_IP_port=argv[1];
+    string othertracker_IP_port=argv[2];
+    seeder_list=argv[3];
+    logfile=argv[4];
+
+
+    loadSeederFromFile();
+    char buffer[1024] = {0}; 
+    int valread;
+    int new_socket=connect();
+
     valread = read( new_socket , buffer, 1024); 
-    printf("%s\n",buffer ); 
-    send(new_socket , hello , strlen(hello) , 0 ); 
+    cout<<"calling iinsert"<<endl;
+    cout<<buffer<<endl;
+    insert(buffer, false);
+
+    cout<<"printing "<<endl;
+    for(auto i:seedermap){
+        cout<<i.first<<" ";
+        for(auto j:i.second){
+            cout<<j.first<<" "<<j.second;
+        }
+        cout<<endl;
+    }
+    
+    // printf("%s\n",buffer ); 
+    send(new_socket , "hello" , strlen("hello") , 0 ); 
     printf("Hello message sent\n"); 
 }

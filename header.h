@@ -9,6 +9,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <map>
+#include <vector>
 
 using namespace std;
 

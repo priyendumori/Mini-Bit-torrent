@@ -1,0 +1,14 @@
+CC = g++
+CFLAGS = -Wall -std=c++14 
+FLAGS = -lssl -lcrypto
+DEPS = header.h trackerglobal.h
+OBJ = trackerglobal.o tracker.o
+
+%.o: %.cpp $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+tracker: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ $(FLAGS)
+
+clean:
+	rm -f *o

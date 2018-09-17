@@ -33,11 +33,12 @@ string stringhash(string s){
 }
 
 void shareDetailsOfExistingTorrent(){
-    // scan .mtorrent folder
+    // scan mtorrent folder
     // share details of each .mtorrent file to tracker
 }
 
 string getStringToSend(string mtorrentName){
+    mtorrentName="mTorrent/"+mtorrentName;
     string send;
     ifstream mt;
     mt.open(mtorrentName);
@@ -52,11 +53,11 @@ string getStringToSend(string mtorrentName){
             hashOfHash=stringhash(temp);
         }
     }
+    mt.close();
 
-    send=hashOfHash+" ";
-    send+=path+" ";
-    send+=clientIP+" ";
-    send+=clientPort;
+    send=hashOfHash+"|";
+    send+=path+"|";
+    send+=clientIP+":"+clientPort;
 
     return send;
 }
@@ -119,7 +120,7 @@ int main(int argc, char **argv){
 
     shareDetailsOfExistingTorrent();
 
-    share("extra/CLRS.pdf", ".mtorrent/clrs.mtorrent");
+    share("extra/CLRS.pdf", "clrs.mtorrent");
 
     return 0;
 }
