@@ -15,3 +15,6 @@
 using namespace std;
 
 void createTorrentFile(string, string);
+void shareDetailsOfExistingTorrent();
+void share(string, string);
+void removeTorrent(string);

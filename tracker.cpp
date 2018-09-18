@@ -2,6 +2,7 @@
 #include "trackerglobal.h"
 
 map<string, map<string, string> > seedermap; // map< hash, map<socket, file>>
+void writeSeederToFile();
 
 void insert(char buffer[], bool callfromfile){
     ofstream seeders;
@@ -17,7 +18,7 @@ void insert(char buffer[], bool callfromfile){
     } 
     // seedermap[s[0]].push_back({s[1], s[2]});
     if(seedermap.find(s[0]) == seedermap.end() ){
-        seedermap[s[0]][s[2]]=s[1];
+        seedermap[s[0]][s[1]]=s[2];
         if(!callfromfile){
             seeders.open(seeder_list.c_str(), ios::app);
             seeders<< bufback <<endl;
@@ -25,14 +26,46 @@ void insert(char buffer[], bool callfromfile){
         }
     }
     else{
-        if(seedermap[s[0]].find(s[2]) == seedermap[s[0]].end() ){
-            seedermap[s[0]][s[2]]=s[1];
+        if(seedermap[s[0]].find(s[1]) == seedermap[s[0]].end() ){
+            seedermap[s[0]][s[1]]=s[2];
             if(!callfromfile){
                 seeders.open(seeder_list.c_str(), ios::app);
                 seeders<< bufback <<endl;
                 seeders.close();
             }
         }
+    }
+}
+
+void remove(char buffer[]){
+    ofstream seeders;
+    string bufback(buffer);
+
+    char *token = strtok(buffer, "|"); 
+    // Keep printing tokens while one of the 
+    // delimiters present in str[]. 
+    vector<string> s;
+    while (token != NULL){ 
+        s.push_back(token);
+        token = strtok(NULL, "|"); 
+    } 
+
+    if(seedermap.find(s[0]) != seedermap.end()){
+        seedermap[s[0]].erase(s[1]);
+        if(seedermap[s[0]].size() == 0){
+            seedermap.erase(s[0]);
+        }
+    }
+
+    writeSeederToFile();
+
+    cout<<"After remove"<<endl;
+    for(auto i:seedermap){
+        cout<<i.first<<":"<<endl;
+        for(auto j:i.second){
+            cout<<j.first<<" "<<j.second<<endl;
+        }
+        cout<<endl<<endl;
     }
 }
 
@@ -45,6 +78,17 @@ void loadSeederFromFile(){
         insert((char *)temp.c_str(), true);
     }
     seeders.close();
+}
+
+void writeSeederToFile(){
+    ofstream seeders;
+    seeders.open(seeder_list.c_str());
+
+    for(auto i:seedermap){
+        for(auto j:i.second){
+            seeders<<i.first<<"|"<<j.first<<"|"<<j.second<<endl;
+        }
+    }
 }
 
 int connect(){
@@ -94,11 +138,13 @@ int connect(){
         perror("accept"); 
         exit(EXIT_FAILURE); 
     } 
+    cout<<"ssssssssssssss "<<new_socket<<endl;
     cout<<"accepted"<<endl;
     return new_socket;
 }
 
 int main(int argc, char **argv){
+
 
     if(argc < 4){
         cout<<"too few arguments"<<endl;
@@ -111,22 +157,29 @@ int main(int argc, char **argv){
 
 
     loadSeederFromFile();
+
+    for(auto i:seedermap){
+        cout<<i.first<<":"<<endl;
+        for(auto j:i.second){
+            cout<<j.first<<" "<<j.second<<endl;
+        }
+        cout<<endl<<endl;
+    }
+
     char buffer[1024] = {0}; 
     int valread;
     int new_socket=connect();
 
     valread = read( new_socket , buffer, 1024); 
-    cout<<"calling iinsert"<<endl;
     cout<<buffer<<endl;
-    insert(buffer, false);
-
-    cout<<"printing "<<endl;
+    //insert(buffer, false);
+    remove(buffer);
     for(auto i:seedermap){
-        cout<<i.first<<" ";
+        cout<<i.first<<":"<<endl;
         for(auto j:i.second){
-            cout<<j.first<<" "<<j.second;
+            cout<<j.first<<" "<<j.second<<endl;
         }
-        cout<<endl;
+        cout<<endl<<endl;
     }
     
     // printf("%s\n",buffer ); 

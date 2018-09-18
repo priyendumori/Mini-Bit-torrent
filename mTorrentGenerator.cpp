@@ -52,9 +52,7 @@ void createTorrentFile(string torrentFileName, string filePath){
     
     //cout<<endl<<endl<<filehash<<endl;
     string filehash=computeHash(filePath);
-    cout<<"name "<<torrentFileName<<endl;
     torrentFileName="mTorrent/"+torrentFileName;
-    cout<<"name "<<torrentFileName<<endl;
     mtfile.open(torrentFileName.c_str());
     mtfile<<tracker1IP<<":"<<tracker1Port<<endl;
     mtfile<<tracker2IP<<":"<<tracker2Port<<endl;
