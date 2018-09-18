@@ -86,9 +86,9 @@ void notifyTracker(string mtorrentName){
     cout<<"connected"<<endl;
     cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
-    printf("Hello message sent\n"); 
-    //valread = read( sock , buffer, 1024); 
-    //printf("%s\n",buffer );  
+    // printf("Hello message sent\n"); 
+    // valread = read( sock , buffer, 1024); 
+    // printf("%s\n",buffer );  
 }
 
 void removeTorrent(string mtorrentName){
@@ -126,7 +126,7 @@ void removeTorrent(string mtorrentName){
     } 
     cout<<"connected"<<endl;
     cout<<"sending"<<endl;
-    // send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
+    send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 
     // printf("%s\n",buffer );  

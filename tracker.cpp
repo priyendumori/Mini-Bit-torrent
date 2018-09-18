@@ -4,8 +4,21 @@
 map<string, map<string, string> > seedermap; // map< hash, map<socket, file>>
 void writeSeederToFile();
 
+mutex mtx;
+fstream seeders;
+
+fstream getFileStream(int mode){
+    fstream seeders;
+    mtx.lock();
+    if(mode==0) seeders.open(seeder_list.c_str(), ios::app);
+    else if(mode==1) seeders.open(seeder_list.c_str(), ios::out);
+    else if(mode==2) seeders.open(seeder_list.c_str(), ios::in);
+    return seeders;
+}
+
+
 void insert(vector<string> s, bool callfromfile){
-    ofstream seeders;
+    // ofstream seeders;
     //string bufback(buffer);
 /*
     char *token = strtok(buffer, "|"); 
@@ -17,22 +30,30 @@ void insert(vector<string> s, bool callfromfile){
         token = strtok(NULL, "|"); 
     }*/ 
     string entry= s[0]+"|"+s[1]+"|"+s[2] ;
-    // seedermap[s[0]].push_back({s[1], s[2]});
+    cout<<"finding "<<s[0]<<endl;
     if(seedermap.find(s[0]) == seedermap.end() ){
+        cout<<"not found";
         seedermap[s[0]][s[1]]=s[2];
         if(!callfromfile){
-            seeders.open(seeder_list.c_str(), ios::app);
+            seeders = getFileStream(0);
+            cout<<"entering...."<<endl;
             seeders<< entry <<endl;
             seeders.close();
+            mtx.unlock();
         }
     }
     else{
+        cout<<"found"<<endl;
+        cout<<"finding "<<s[1]<<endl;
         if(seedermap[s[0]].find(s[1]) == seedermap[s[0]].end() ){
+            cout<<"not found"<<endl;
             seedermap[s[0]][s[1]]=s[2];
             if(!callfromfile){
-                seeders.open(seeder_list.c_str(), ios::app);
+                seeders = getFileStream(0);
+                cout<<"entering...."<<endl;
                 seeders<< entry <<endl;
                 seeders.close();
+                mtx.unlock();
             }
         }
     }
@@ -40,7 +61,7 @@ void insert(vector<string> s, bool callfromfile){
 
 void remove(vector<string> s){
     cout<<"in remove"<<endl;
-    ofstream seeders;
+    // ofstream seeders;
 /*
     char *token = strtok(buffer, "|"); 
     // Keep printing tokens while one of the 
@@ -77,8 +98,8 @@ void remove(vector<string> s){
 
 void loadSeederFromFile(){
 
-    ifstream seeders;
-    seeders.open(seeder_list.c_str());
+    // ifstream seeders;
+    seeders = getFileStream(2);
     
     string temp;
     while(getline(seeders, temp)){
@@ -96,24 +117,31 @@ void loadSeederFromFile(){
 
     }
     seeders.close();
+    mtx.unlock();
 }
 
 void writeSeederToFile(){
-    ofstream seeders;
-    seeders.open(seeder_list.c_str());
+    // ofstream seeders;
+    seeders = getFileStream(1);
 
     for(auto i:seedermap){
         for(auto j:i.second){
             seeders<<i.first<<"|"<<j.first<<"|"<<j.second<<endl;
         }
     }
+    seeders.close();
+    mtx.unlock();
 }
 
-int connect(){
-    int server_fd, new_socket; 
-    struct sockaddr_in address; 
+int server_fd; 
+struct sockaddr_in address; 
+int addrlen = sizeof(address); 
+
+void createSocket(){
+    // int server_fd; 
+    // struct sockaddr_in address; 
     int opt = 1; 
-    int addrlen = sizeof(address); 
+    // int addrlen = sizeof(address); 
     
     
     cout<<"start"<<endl;
@@ -149,16 +177,53 @@ int connect(){
         perror("listen"); 
         exit(EXIT_FAILURE); 
     } 
-    cout<<"listening"<<endl;
-    if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
-                       (socklen_t*)&addrlen))<0) 
-    { 
-        perror("accept"); 
-        exit(EXIT_FAILURE); 
+    
+}
+
+void serveRequest(int new_socket){
+    char buffer[1024] = {0}; 
+    int valread;
+
+    valread = read( new_socket , buffer, 1024); 
+    cout<<buffer<<endl;
+
+    char *token = strtok(buffer, "|"); 
+    // Keep printing tokens while one of the 
+    // delimiters present in str[]. 
+    vector<string> s;
+    while (token != NULL){ 
+        s.push_back(token);
+        token = strtok(NULL, "|"); 
     } 
-    cout<<"ssssssssssssss "<<new_socket<<endl;
-    cout<<"accepted"<<endl;
-    return new_socket;
+
+    cout<<"rec "<<endl;
+    for(auto i:s) cout<<i<<endl;
+
+
+    if(s[s.size()-1] == "0"){
+        //share
+        insert(s,false);
+    }
+    else if(s[s.size()-1] == "1"){
+        //remove
+        remove(s);
+    }
+    else if(s[s.size()-1] == "2"){
+        //get
+    }
+    //insert(buffer, false);
+    //remove(buffer);
+    for(auto i:seedermap){
+        cout<<i.first<<":"<<endl;
+        for(auto j:i.second){
+            cout<<j.first<<" "<<j.second<<endl;
+        }
+        cout<<endl<<endl;
+    }
+    
+    // printf("%s\n",buffer ); 
+    // send(new_socket , "hello" , strlen("hello") , 0 ); 
+    // printf("Hello message sent\n"); 
 }
 
 int main(int argc, char **argv){
@@ -184,50 +249,17 @@ int main(int argc, char **argv){
         cout<<endl<<endl;
     }
 
-    char buffer[1024] = {0}; 
-    int valread;
+    createSocket();
     while(1){
-        int new_socket=connect();
-
-        valread = read( new_socket , buffer, 1024); 
-        cout<<buffer<<endl;
-
-        char *token = strtok(buffer, "|"); 
-        // Keep printing tokens while one of the 
-        // delimiters present in str[]. 
-        vector<string> s;
-        while (token != NULL){ 
-            s.push_back(token);
-            token = strtok(NULL, "|"); 
+        int new_socket;
+        cout<<"listening"<<endl;
+        if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
+                        (socklen_t*)&addrlen))<0) 
+        { 
+            perror("accept"); 
+            exit(EXIT_FAILURE); 
         } 
-
-        cout<<"rec "<<endl;
-        for(auto i:s) cout<<i<<endl;
-
-
-        if(s[s.size()-1] == "0"){
-            //share
-            insert(s,false);
-        }
-        else if(s[s.size()-1] == "1"){
-            //remove
-            remove(s);
-        }
-        else if(s[s.size()-1] == "2"){
-            //get
-        }
-        //insert(buffer, false);
-        //remove(buffer);
-        for(auto i:seedermap){
-            cout<<i.first<<":"<<endl;
-            for(auto j:i.second){
-                cout<<j.first<<" "<<j.second<<endl;
-            }
-            cout<<endl<<endl;
-        }
-        
-        // printf("%s\n",buffer ); 
-        send(new_socket , "hello" , strlen("hello") , 0 ); 
-        printf("Hello message sent\n"); 
+        thread t(serveRequest, std::ref(new_socket));
+        t.join();
     }
 }
