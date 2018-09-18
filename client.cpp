@@ -56,7 +56,7 @@ int main(int argc, char **argv){
             share(s[1], s[2]);
         }
         else if(s[0] == "get"){
-            //
+            get(s[1], s[2]);
         }
         else if(s[0] == "remove"){
             removeTorrent(s[1]);

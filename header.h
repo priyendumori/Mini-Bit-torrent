@@ -20,3 +20,5 @@ void createTorrentFile(string, string);
 void shareDetailsOfExistingTorrent();
 void share(string, string);
 void removeTorrent(string);
+string getStringToSend(string, int);
+void get(string, string);

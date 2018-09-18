@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -std=c++14 
-FLAGS = -lssl -lcrypto
+FLAGS = -lssl -lcrypto -lpthread
 DEPS = header.h trackerglobal.h
 OBJ = trackerglobal.o tracker.o
 

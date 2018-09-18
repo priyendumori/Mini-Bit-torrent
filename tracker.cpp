@@ -16,7 +16,6 @@ fstream getFileStream(int mode){
     return seeders;
 }
 
-
 void insert(vector<string> s, bool callfromfile){
     // ofstream seeders;
     //string bufback(buffer);
@@ -95,6 +94,21 @@ void remove(vector<string> s){
         cout<<endl<<endl;
     }
 }
+
+string getList(string hash){
+    string list;
+    for(auto i:seedermap){
+        for(auto j:i.second){
+            list+=j.first+"|"+j.second+"|";
+        }
+    }
+    return list;
+}
+
+void sendSeederList(vector<string> s, int new_socket){
+    string list = getList(s[0]);
+    send(new_socket , list.c_str() , list.length() , 0 );
+} 
 
 void loadSeederFromFile(){
 
@@ -210,6 +224,7 @@ void serveRequest(int new_socket){
     }
     else if(s[s.size()-1] == "2"){
         //get
+        sendSeederList(s, new_socket);
     }
     //insert(buffer, false);
     //remove(buffer);
