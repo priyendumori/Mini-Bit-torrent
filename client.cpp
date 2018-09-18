@@ -29,11 +29,42 @@ int main(int argc, char **argv){
 
     shareDetailsOfExistingTorrent();
 
-    //share("extra/CLRS.pdf", "clrs.mtorrent");
+    // share("extra/CLRS.pdf", "clrs.mtorrent");
 
     //sleep(15);
-    cout<<"calling remove"<<endl;
-    removeTorrent("clrs.mtorrent");
+    // cout<<"calling remove"<<endl;
+    // removeTorrent("clrs.mtorrent");
 
+    while(1){
+        string command;
+        cout<<"ready to take command "<<endl;
+        getline(cin, command);
+        cout<<"cc "<<command<<endl;
+        char *token = strtok((char *)command.c_str(), " "); 
+        // Keep printing tokens while one of the 
+        // delimiters present in str[]. 
+        vector<string> s;
+        while (token != NULL){ 
+            s.push_back(token);
+            token = strtok(NULL, " ");
+        }
+
+        cout<<"Sssssssssssss "<< s.size()<<endl;
+        for(auto i:s) cout<<i<<endl;
+
+        if(s[0] == "share"){
+            share(s[1], s[2]);
+        }
+        else if(s[0] == "get"){
+            //
+        }
+        else if(s[0] == "remove"){
+            removeTorrent(s[1]);
+        }
+        else{
+            cout<<"invalid command "<<endl;
+        }
+
+    }
     return 0;
 }

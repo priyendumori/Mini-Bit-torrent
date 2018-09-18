@@ -24,7 +24,7 @@ void shareDetailsOfExistingTorrent(){
 }
 
 
-string getStringToSend(string mtorrentName){
+string getStringToSend(string mtorrentName, int type){
     mtorrentName="mTorrent/"+mtorrentName;
     string send;
     ifstream mt;
@@ -44,7 +44,7 @@ string getStringToSend(string mtorrentName){
 
     send=hashOfHash+"|";
     send+=clientIP+":"+clientPort+"|";
-    send+=path;
+    send+=path+"|"+to_string(type);
 
     return send;
 }
@@ -52,7 +52,7 @@ string getStringToSend(string mtorrentName){
 
 void notifyTracker(string mtorrentName){
 
-    string sendstring = getStringToSend(mtorrentName);
+    string sendstring = getStringToSend(mtorrentName, 0);
 
     struct sockaddr_in address; 
     int sock = 0, valread; 
@@ -87,13 +87,13 @@ void notifyTracker(string mtorrentName){
     cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     printf("Hello message sent\n"); 
-    valread = read( sock , buffer, 1024); 
-    printf("%s\n",buffer );  
+    //valread = read( sock , buffer, 1024); 
+    //printf("%s\n",buffer );  
 }
 
 void removeTorrent(string mtorrentName){
     cout<<"in remove"<<endl;
-    string sendstring=getStringToSend(mtorrentName);
+    string sendstring=getStringToSend(mtorrentName, 1);
     cout<<"s to send "<<sendstring<<endl;
     struct sockaddr_in address; 
     int sock = 0, valread; 
@@ -126,10 +126,10 @@ void removeTorrent(string mtorrentName){
     } 
     cout<<"connected"<<endl;
     cout<<"sending"<<endl;
-    send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
-    printf("Hello message sent\n"); 
-    valread = read( sock , buffer, 1024); 
-    printf("%s\n",buffer );  
+    // send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
+    // printf("Hello message sent\n"); 
+    // valread = read( sock , buffer, 1024); 
+    // printf("%s\n",buffer );  
 
     /********************************************************
     have to add code to delete the mtorrent file
