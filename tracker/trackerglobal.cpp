@@ -6,3 +6,7 @@ string othertrackerIP;
 string othertrackerport;
 string seeder_list;
 string logfile;
+
+map<string, map<string, string> > seedermap; // map< hash, map<socket, file>>
+mutex mtx;
+fstream seeders;
