@@ -7,3 +7,5 @@ string tracker1Port;
 string tracker2IP;
 string tracker2Port;
 string logfile;
+mutex logmtx;
+fstream logger;

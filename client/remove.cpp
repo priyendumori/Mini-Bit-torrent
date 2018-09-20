@@ -3,12 +3,12 @@
 
 
 void removeTorrent(string mtorrentName){
-    cout<<"in remove"<<endl;
+    // cout<<"in remove"<<endl;
     string sendstring=getStringToSend(mtorrentName, 1);
-    cout<<"s to send "<<sendstring<<endl;
+    // cout<<"s to send "<<sendstring<<endl;
     
     int sock=create_socket();
-    cout<<"sending"<<endl;
+    // cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 

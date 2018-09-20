@@ -1,6 +1,21 @@
 #include "header.h"
 #include "clientglobal.h"
 
+void log(string s){
+    logmtx.lock();
+    logger.open(logfile.c_str(), ios::app);
+
+    time_t tt; 
+    struct tm * ti; 
+    time (&tt); 
+    ti = localtime(&tt); 
+    string datetime=asctime(ti);
+    datetime.pop_back();
+    logger<<datetime<<" -> "; 
+    logger<<s<<endl;
+
+    logmtx.unlock();
+}
 
 string getStringToSend(string mtorrentName, int type){
     mtorrentName="mTorrent/"+mtorrentName;

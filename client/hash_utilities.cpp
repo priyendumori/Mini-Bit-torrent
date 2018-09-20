@@ -25,7 +25,7 @@ string computeHash(string filePath){
     char buffer[chunksize]; //reads only the first 1024 bytes
     string filehash="";
     long long size = getFileSize(filePath);
-    long long sizeLeftToHash=size;
+    size_t sizeLeftToHash=size;
 
     if(sizeLeftToHash < chunksize) chunksize=sizeLeftToHash;
     while(sharedfile.read(buffer, chunksize)) {

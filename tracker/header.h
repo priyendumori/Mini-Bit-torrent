@@ -25,3 +25,4 @@ void createSocket();
 void serveRequest(int );
 void writeSeederToFile();
 void loadSeederFromFile();
+void log(string );

@@ -12,7 +12,7 @@ void notifyTracker(string mtorrentName){
     string sendstring = getStringToSend(mtorrentName, 0);
 
     int sock = create_socket();
-    cout<<"sending"<<endl;
+    // cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 

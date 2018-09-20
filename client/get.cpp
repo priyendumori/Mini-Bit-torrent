@@ -2,19 +2,18 @@
 #include "clientglobal.h"
 
 void get(string mtorrentName, string downpath){
-    cout<<"in here"<<endl;
+    // cout<<"in here"<<endl;
     string sendstring=getStringToSend(mtorrentName, 2);
-    cout<<"s to send "<<sendstring<<endl;
+    // cout<<"s to send "<<sendstring<<endl;
     char buffer[1024] = {0};
-    int valread; 
     
     int sock=create_socket();
 
-    cout<<"sending"<<endl;
+    // cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
 
-    valread = read( sock , buffer, 1024); 
-    printf("buf %s\n",buffer );  
+    read( sock , buffer, 1024); 
+    // printf("buf %s\n",buffer );  
 
     vector<string> seeder;
     seeder = tokenize(buffer, "|");

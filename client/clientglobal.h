@@ -7,3 +7,5 @@ extern string tracker1Port;
 extern string tracker2IP;
 extern string tracker2Port;
 extern string logfile;
+extern mutex logmtx;
+extern fstream logger;

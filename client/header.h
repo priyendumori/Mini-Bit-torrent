@@ -29,3 +29,4 @@ long long getFileSize(string );
 string stringhash(string );
 string getStringToSend(string , int);
 int create_socket();
+void log(string);
