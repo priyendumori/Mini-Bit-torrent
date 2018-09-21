@@ -12,6 +12,9 @@ int main(int argc, char **argv){
     logfile=argv[4];
     initializeGlobalVariables(client_IP_port, t1_IP_port, t2_IP_port);
 
+    thread t(startListening);
+    t.detach();
+
     shareDetailsOfExistingTorrent();
 
     // share("extra/CLRS.pdf", "clrs.mtorrent");

@@ -7,7 +7,7 @@ void removeTorrent(string mtorrentName){
     string sendstring=getStringToSend(mtorrentName, 1);
     // cout<<"s to send "<<sendstring<<endl;
     
-    int sock=create_socket();
+    int sock=create_socket("","",false);
     // cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     // printf("Hello message sent\n"); 

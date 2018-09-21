@@ -6,12 +6,11 @@ void shareDetailsOfExistingTorrent(){
     // share details of each .mtorrent file to tracker
 }
 
-
 void notifyTracker(string mtorrentName){
 
     string sendstring = getStringToSend(mtorrentName, 0);
 
-    int sock = create_socket();
+    int sock = create_socket("","",false);
     // cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     // printf("Hello message sent\n"); 

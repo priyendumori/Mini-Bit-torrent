@@ -28,5 +28,6 @@ string computeHash(string );
 long long getFileSize(string );
 string stringhash(string );
 string getStringToSend(string , int);
-int create_socket();
+int create_socket(string, string, bool);
 void log(string);
+void startListening();
