@@ -18,7 +18,6 @@ string stringhash(string s){
 }
 
 string computeHash(string filePath){
-
     ifstream sharedfile;
     sharedfile.open(filePath.c_str(), ios::binary);
     size_t chunksize= 524288;

@@ -98,8 +98,51 @@ void startListening(){
             exit(EXIT_FAILURE); 
         }
         log("request accepted "); 
-        char buffer[1024]={0};
-        read( new_socket , buffer, 1024);
-        cout<<buffer<<endl;
+        char buffer1[1024]={0};
+        read( new_socket , buffer1, 1024);
+        cout<<buffer1<<endl;
+
+        ifstream sharedfile;
+        sharedfile.open(buffer1, ios::binary);
+        size_t chunksize= 524288;
+        char buffer[chunksize]; //reads only the first 1024 bytes
+        string filePath(buffer1);
+        long long size = getFileSize(filePath);
+        size_t sizeLeftToSend=size;
+
+        if(sizeLeftToSend < chunksize) chunksize=sizeLeftToSend;
+        while(sharedfile.read(buffer, chunksize)) {
+            ///do with buffer
+            if(chunksize==0) break;
+            sizeLeftToSend-=chunksize;
+
+            send(new_socket, buffer, chunksize ,0);
+
+
+            if(sizeLeftToSend<chunksize) chunksize=sizeLeftToSend;
+            // break;
+        }
+        sharedfile.close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

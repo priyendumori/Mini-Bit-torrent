@@ -3,10 +3,10 @@
 
 string getList(string hash){
     string list;
-    for(auto i:seedermap){
-        for(auto j:i.second){
-            list+=j.first+"|"+j.second+"|";
-        }
+    for(auto i:seedermap[hash]){
+        // for(auto j:i.second){
+            list+=i.first+"|"+i.second+"|";
+        // }
     }
     return list;
 }
