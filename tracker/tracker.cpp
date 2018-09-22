@@ -30,12 +30,16 @@ int main(int argc, char **argv){
     string othertracker_IP_port=argv[2];
     seeder_list=argv[3];
     logfile=argv[4];
-    /*************************************************************
-     * assign global variables the value entered by user
-     * like tracker ip port
-    **************************************************************/
-
     
+    int index = mytracker_IP_port.find_first_of(":");
+    mytrackerIP=mytracker_IP_port.substr(0,index);
+    mytrackerport=mytracker_IP_port.substr(index+1,4);
+    
+    index = othertracker_IP_port.find_first_of(":");
+    othertrackerIP=othertracker_IP_port.substr(0,index);
+    othertrackerport=othertracker_IP_port.substr(index+1,4);
+    
+
     loadSeederFromFile();
 
     // for(auto i:seedermap){

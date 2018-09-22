@@ -29,13 +29,9 @@ void createSocket(){
     } 
     // cout<<"setsocketopt"<<endl;
 
-    /*****************************************************
-     * INADDR_ANY should change to tracker IP
-     * pass port to htons that is given by user
-    ******************************************************/
     address.sin_family = AF_INET; 
-    address.sin_addr.s_addr = INADDR_ANY; 
-    address.sin_port = htons( 1235 ); 
+    address.sin_addr.s_addr = inet_addr(mytrackerIP.c_str());//INADDR_ANY; 
+    address.sin_port = htons( atoi(mytrackerport.c_str()) ); 
        
     // Forcefully attaching socket to the port 8080 
     if (bind(server_fd, (struct sockaddr *)&address,  
