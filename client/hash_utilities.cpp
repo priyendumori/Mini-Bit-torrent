@@ -2,6 +2,7 @@
 #include "clientglobal.h"
 
 string stringhash(string s){
+    // cout<<"hashing "<<s<<endl;
     unsigned char hashbuf[20]; // == 20
     unsigned char hash[40];
 

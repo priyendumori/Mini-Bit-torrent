@@ -46,7 +46,6 @@ int main(int argc, char **argv){
         else{
             cout<<"invalid command "<<endl;
         }
-
     }
     return 0;
 }

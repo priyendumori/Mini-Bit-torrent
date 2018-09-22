@@ -59,7 +59,7 @@ void serveRequest(int new_socket){
     char buffer[1024] = {0}; 
 
     read( new_socket , buffer, 1024); 
-    // cout<<buffer<<endl;
+    cout<<buffer<<endl;
 
     char *token = strtok(buffer, "|"); 
     // Keep printing tokens while one of the 
@@ -70,8 +70,8 @@ void serveRequest(int new_socket){
         token = strtok(NULL, "|"); 
     } 
 
-    // cout<<"rec "<<endl;
-    // for(auto i:s) cout<<i<<endl;
+    cout<<"rec "<<endl;
+    for(auto i:s) cout<<i<<endl;
 
 
     if(s[s.size()-1] == "0"){
@@ -95,6 +95,7 @@ void serveRequest(int new_socket){
         }
         cout<<endl<<endl;
     }
+    cout<<"map end"<<endl;
     
     // printf("%s\n",buffer ); 
     // send(new_socket , "hello" , strlen("hello") , 0 ); 

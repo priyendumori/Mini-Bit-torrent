@@ -19,6 +19,14 @@ void createTorrentFile(string torrentFileName, string filePath){
     mtfile.open(torrentFileName.c_str());
     mtfile<<tracker1IP<<":"<<tracker1Port<<endl;
     mtfile<<tracker2IP<<":"<<tracker2Port<<endl;
+
+    if(filePath[0]!='/'){
+        char buffer[1000];
+        getcwd(buffer, 1000);
+        cout<<buffer<<endl;
+        string pwd(buffer);
+        filePath=pwd+"/"+filePath;
+    }
     mtfile<<filePath<<endl;
     mtfile<<getFileSize(filePath)<<endl;
     mtfile<<filehash;

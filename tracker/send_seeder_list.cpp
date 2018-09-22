@@ -3,11 +3,13 @@
 
 string getList(string hash){
     string list;
+    cout<<"hash "<<hash<<endl;
     for(auto i:seedermap[hash]){
         // for(auto j:i.second){
             list+=i.first+"|"+i.second+"|";
         // }
     }
+    cout<<"returning "<<list<<endl;
     return list;
 }
 

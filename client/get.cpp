@@ -2,7 +2,7 @@
 #include "clientglobal.h"
 
 void download(vector<pair<string, string> > seederpair, string mtorrentName, string downpath){
-    mtorrentName="mTorrent/"+mtorrentName;
+    mtorrentName="./mTorrent/"+mtorrentName;
     ifstream mt;
     mt.open(mtorrentName);
     string path;
@@ -31,16 +31,21 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     // cout<<"sending"<<endl;
     send(cl_sock , path.c_str() , path.length() , 0 );
 
-    char buffer[524788]={0};
+    char buffer[524288]={0};
     ofstream file;
     file.open(downpath);
-    while(chunkcount>=0){
+    /*while(chunkcount>=0){
         memset(buffer,0,sizeof(buffer));
         int rec_l=read( cl_sock , buffer, 524788);
         file.write(buffer, rec_l);
         // cout<<buffer;
         chunkcount--;
-    }
+    }*/
+    int rec_l;
+    do{
+        rec_l=read( cl_sock , buffer, 524288);
+        file.write(buffer, rec_l);
+    }while(rec_l>0);
     file.close();
 }
 
