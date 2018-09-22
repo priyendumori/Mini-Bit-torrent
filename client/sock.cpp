@@ -123,25 +123,5 @@ void startListening(){
         }
         sharedfile.close();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

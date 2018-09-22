@@ -86,6 +86,9 @@ void serveRequest(int new_socket){
         //get
         sendSeederList(s, new_socket);
     }
+    else if(s[s.size()-1] == "3"){
+        clientOffLine(s);
+    }
     //insert(buffer, false);
     //remove(buffer);
     for(auto i:seedermap){

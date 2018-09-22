@@ -15,7 +15,7 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
             path=temp;
         }
         if(i==3){
-            cout<<"ddsfd "<<temp<<endl;
+            // cout<<"ddsfd "<<temp<<endl;
             size=stoi(temp);
         }
     }
@@ -71,7 +71,8 @@ void get(string mtorrentName, string downpath){
     }
     for(auto i:seederpair) cout<<i.first<<" "<<i.second<<endl;
 
-    thread t(download, ref(seederpair), ref(mtorrentName), ref(downpath));
-    t.join();
+    thread t(download, seederpair, mtorrentName, downpath);
+    t.detach();
+    // t.join();
     
 }

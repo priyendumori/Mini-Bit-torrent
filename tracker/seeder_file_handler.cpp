@@ -92,3 +92,31 @@ void remove(vector<string> s){
         cout<<endl<<endl;
     }
 }
+
+void clientOffLine(vector<string> s){
+    for(auto l:seedermap){
+        cout<<"going for hash "<<l.first<<endl;
+        for(auto sock:l.second){
+            cout<<"s "<<sock.first<<endl;
+            cout<<"sk "<<s[0]<<endl;
+            if(sock.first == s[0]){
+                seedermap[l.first].erase(s[0]);
+                
+                if(seedermap[l.first].size() == 0){
+                    seedermap.erase(l.first);
+                }
+            }
+        }
+    }
+
+    writeSeederToFile();
+
+    cout<<"After remove"<<endl;
+    for(auto i:seedermap){
+        cout<<i.first<<":"<<endl;
+        for(auto j:i.second){
+            cout<<j.first<<" "<<j.second<<endl;
+        }
+        cout<<endl<<endl;
+    }
+}

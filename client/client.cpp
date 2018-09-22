@@ -17,21 +17,15 @@ int main(int argc, char **argv){
 
     shareDetailsOfExistingTorrent();
 
-    // share("extra/CLRS.pdf", "clrs.mtorrent");
-
-    //sleep(15);
-    // cout<<"calling remove"<<endl;
-    // removeTorrent("clrs.mtorrent");
-
     while(1){
         string command;
-        cout<<"ready to take command "<<endl;
+        // cout<<"ready to take command "<<endl;
         getline(cin, command);
-        cout<<"cc "<<command<<endl;
+        // cout<<"cc "<<command<<endl;
         
         vector<string> s=tokenize(command, " ");
 
-        cout<<"Sssssssssssss "<< s.size()<<endl;
+        // cout<<"Sssssssssssss "<< s.size()<<endl;
         for(auto i:s) cout<<i<<endl;
 
         if(s[0] == "share"){
@@ -42,6 +36,9 @@ int main(int argc, char **argv){
         }
         else if(s[0] == "remove"){
             removeTorrent(s[1]);
+        }
+        else if(s[0]=="exit"){
+            closeClient();
         }
         else{
             cout<<"invalid command "<<endl;

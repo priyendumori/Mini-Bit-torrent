@@ -32,3 +32,4 @@ string getStringToSend(string , int);
 int create_socket(string, string, bool);
 void log(string);
 void startListening();
+void closeClient();

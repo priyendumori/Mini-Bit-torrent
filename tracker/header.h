@@ -26,3 +26,4 @@ void serveRequest(int );
 void writeSeederToFile();
 void loadSeederFromFile();
 void log(string );
+void clientOffLine(vector<string> );
