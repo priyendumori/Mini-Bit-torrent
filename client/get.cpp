@@ -34,25 +34,24 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     char buffer[524288]={0};
     ofstream file;
     file.open(downpath);
-    /*while(chunkcount>=0){
-        memset(buffer,0,sizeof(buffer));
-        int rec_l=read( cl_sock , buffer, 524788);
-        file.write(buffer, rec_l);
-        // cout<<buffer;
-        chunkcount--;
-    }*/
+    
+
     int rec_l;
     do{
         rec_l=read( cl_sock , buffer, 524288);
         file.write(buffer, rec_l);
     }while(rec_l>0);
     file.close();
+    close(cl_sock);
 }
 
 void get(string mtorrentName, string downpath){
     // cout<<"in here"<<endl;
     string sendstring=getStringToSend(mtorrentName, 2);
     // cout<<"s to send "<<sendstring<<endl;
+    string hash = sendstring;
+    hash=hash.substr(0,hash.find_first_of("|"));
+    cout<<"hash ......  "<<hash<<endl; 
     char buffer[1024] = {0};
     
     int sock=create_socket("","",false);
@@ -71,8 +70,21 @@ void get(string mtorrentName, string downpath){
     }
     for(auto i:seederpair) cout<<i.first<<" "<<i.second<<endl;
 
+    if(downpath[0]!='/'){
+        char buffer[1000];
+        getcwd(buffer, 1000);
+        // cout<<buffer<<endl;
+        string pwd(buffer);
+        downpath=pwd+"/"+downpath;
+    }
+
+    string shareinfo=hash+"|"+clientIP+":"+clientPort+"|"+downpath+"|"+"0";
+    cout<<"sadaaddfdsfd "<<shareinfo<<endl;
+    send(sock , shareinfo.c_str() , shareinfo.length() , 0 ); 
+
     thread t(download, seederpair, mtorrentName, downpath);
     t.detach();
     // t.join();
+    close(sock);
     
 }

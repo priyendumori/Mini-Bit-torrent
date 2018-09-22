@@ -13,8 +13,7 @@ void removeTorrent(string mtorrentName){
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 
     // printf("%s\n",buffer );  
-
-    /********************************************************
-    have to add code to delete the mtorrent file
-    *********************************************************/
+    mtorrentName="./mTorrent/"+mtorrentName;
+    remove(mtorrentName.c_str());
+    close(sock);
 }

@@ -122,6 +122,6 @@ void startListening(){
             // break;
         }
         sharedfile.close();
-
+        close(new_socket);
     }
 }
