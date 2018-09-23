@@ -12,10 +12,10 @@ int main(int argc, char **argv){
     logfile=argv[4];
     initializeGlobalVariables(client_IP_port, t1_IP_port, t2_IP_port);
 
+    shareDetailsOfExistingTorrent();
+
     thread t(startListening);
     t.detach();
-
-    shareDetailsOfExistingTorrent();
 
     while(1){
         string command;

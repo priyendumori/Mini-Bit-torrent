@@ -14,6 +14,8 @@
 #include <thread>
 #include <mutex>
 #include <math.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 using namespace std;
 
@@ -33,3 +35,4 @@ int create_socket(string, string, bool);
 void log(string);
 void startListening();
 void closeClient();
+void notifyTracker(string );

@@ -3,6 +3,25 @@
 
 void shareDetailsOfExistingTorrent(){
     // scan mtorrent folder
+    string foldername="./mTorrent";
+    DIR* dirp = opendir(foldername.c_str());
+    struct dirent * dp;
+    while ((dp = readdir(dirp)) != NULL) {
+        // v.push_back(dp->d_name);
+        if(dp->d_name=="." || dp->d_name=="..") continue;
+        string n=dp->d_name;
+        int in=n.find_last_of(".");
+        string ext=n.substr(in+1);
+        if(ext!="mtorrent") continue;
+
+        // cout<<"for "<< dp->d_name <<endl;
+        // string send=getStringToSend(dp->d_name, 0);
+        // cout<<"senf....."<<send<<endl<<endl;
+        notifyTracker(dp->d_name);
+
+    }
+    closedir(dirp);
+
     // share details of each .mtorrent file to tracker
 }
 

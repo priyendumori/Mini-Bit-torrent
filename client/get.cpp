@@ -43,6 +43,9 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
         file.write(buffer, rec_l);
     }while(rec_l>0);
     file.close();
+
+    cout<<"DOWNLOADED......"<<endl;
+
     close(cl_sock);
 }
 
