@@ -81,20 +81,21 @@ void serveRequest(int new_socket){
     else if(s[s.size()-1] == "2"){
         //get
         sendSeederList(s, new_socket);
+        cout<<"I came back"<<endl;
     }
     else if(s[s.size()-1] == "3"){
         clientOffLine(s);
     }
     //insert(buffer, false);
     //remove(buffer);
-    for(auto i:seedermap){
-        cout<<i.first<<":"<<endl;
-        for(auto j:i.second){
-            cout<<j.first<<" "<<j.second<<endl;
-        }
-        cout<<endl<<endl;
-    }
-    cout<<"map end"<<endl;
+    // for(auto i:seedermap){
+    //     cout<<i.first<<":"<<endl;
+    //     for(auto j:i.second){
+    //         cout<<j.first<<" "<<j.second<<endl;
+    //     }
+    //     cout<<endl<<endl;
+    // }
+    // cout<<"map end"<<endl;
     
     // printf("%s\n",buffer ); 
     // send(new_socket , "hello" , strlen("hello") , 0 ); 

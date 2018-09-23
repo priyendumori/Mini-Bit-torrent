@@ -56,6 +56,14 @@ int main(int argc, char **argv){
         else if(s[0]=="exit"){
             closeClient();
         }
+        else if(s[0]=="show"){
+            if(s[1]=="downloads"){
+                show_down();
+            }
+            else{
+                cout<<"invalid command "<<endl;    
+            }
+        }
         else{
             cout<<"invalid command "<<endl;
         }

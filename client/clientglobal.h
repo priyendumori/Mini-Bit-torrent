@@ -9,3 +9,4 @@ extern string tracker2Port;
 extern string logfile;
 extern mutex logmtx;
 extern fstream logger;
+extern map<string, int> downloads;

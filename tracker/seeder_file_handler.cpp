@@ -50,7 +50,7 @@ void writeSeederToFile(){
 void insert(vector<string> s, bool callfromfile){
   
     string entry= s[0]+"*|?"+s[1]+"*|?"+s[2] ;
-  
+    cout<<"making entry for "<<entry<<endl;
     if(seedermap.find(s[0]) == seedermap.end() ){
         seedermap[s[0]][s[1]]=s[2];
         if(!callfromfile){

@@ -36,3 +36,4 @@ void log(string);
 void startListening();
 void closeClient();
 void notifyTracker(string );
+void show_down();

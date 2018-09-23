@@ -9,3 +9,4 @@ string tracker2Port;
 string logfile;
 mutex logmtx;
 fstream logger;
+map<string, int> downloads;

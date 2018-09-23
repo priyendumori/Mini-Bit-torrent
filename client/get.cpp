@@ -45,6 +45,7 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     file.close();
 
     cout<<"DOWNLOADED......"<<endl;
+    downloads[downpath]++;
 
     close(cl_sock);
 }
@@ -85,6 +86,8 @@ void get(string mtorrentName, string downpath){
     string shareinfo=hash+"*|?"+clientIP+":"+clientPort+"*|?"+downpath+"*|?"+"0";
     cout<<"sadaaddfdsfd "<<shareinfo<<endl;
     send(sock , shareinfo.c_str() , shareinfo.length() , 0 ); 
+
+    downloads[downpath]=1;
 
     thread t(download, seederpair, mtorrentName, downpath);
     t.detach();
