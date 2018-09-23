@@ -20,7 +20,7 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
         }
     }
     mt.close();
-    int chunkcount=ceil(size/524288.0);
+    // int chunkcount=ceil(size/524288.0);
 
     char *token = strtok((char *)seederpair[0].first.c_str(), ":");
     string ip=token;
@@ -50,7 +50,7 @@ void get(string mtorrentName, string downpath){
     string sendstring=getStringToSend(mtorrentName, 2);
     // cout<<"s to send "<<sendstring<<endl;
     string hash = sendstring;
-    hash=hash.substr(0,hash.find_first_of("|"));
+    hash=hash.substr(0,hash.find_first_of("*|?"));
     cout<<"hash ......  "<<hash<<endl; 
     char buffer[1024] = {0};
     
@@ -63,7 +63,7 @@ void get(string mtorrentName, string downpath){
     // printf("buf %s\n",buffer );  
 
     vector<string> seeder;
-    seeder = tokenize(buffer, "|");
+    seeder = tokenize(buffer, "*|?");
     vector<pair<string,string> > seederpair;
     for(int i=0;i<seeder.size();i+=2){
         seederpair.push_back({seeder[i], seeder[i+1]});
@@ -78,7 +78,7 @@ void get(string mtorrentName, string downpath){
         downpath=pwd+"/"+downpath;
     }
 
-    string shareinfo=hash+"|"+clientIP+":"+clientPort+"|"+downpath+"|"+"0";
+    string shareinfo=hash+"*|?"+clientIP+":"+clientPort+"*|?"+downpath+"*|?"+"0";
     cout<<"sadaaddfdsfd "<<shareinfo<<endl;
     send(sock , shareinfo.c_str() , shareinfo.length() , 0 ); 
 

@@ -6,7 +6,7 @@ string getList(string hash){
     cout<<"hash "<<hash<<endl;
     for(auto i:seedermap[hash]){
         // for(auto j:i.second){
-            list+=i.first+"|"+i.second+"|";
+            list+=i.first+"*|?"+i.second+"*|?";
         // }
     }
     cout<<"returning "<<list<<endl;

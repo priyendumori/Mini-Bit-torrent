@@ -57,13 +57,13 @@ void serveRequest(int new_socket){
     read( new_socket , buffer, 1024); 
     cout<<buffer<<endl;
 
-    char *token = strtok(buffer, "|"); 
+    char *token = strtok(buffer, "*|?"); 
     // Keep printing tokens while one of the 
     // delimiters present in str[]. 
     vector<string> s;
     while (token != NULL){ 
         s.push_back(token);
-        token = strtok(NULL, "|"); 
+        token = strtok(NULL, "*|?"); 
     } 
 
     cout<<"rec "<<endl;

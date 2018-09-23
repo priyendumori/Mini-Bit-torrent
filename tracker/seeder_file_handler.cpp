@@ -18,13 +18,13 @@ void loadSeederFromFile(){
     string temp;
     while(getline(seeders, temp)){
         //insert((char *)temp.c_str(), true);
-        char *token = strtok((char *)temp.c_str(), "|"); 
+        char *token = strtok((char *)temp.c_str(), "*|?"); 
         // Keep printing tokens while one of the 
         // delimiters present in str[]. 
         vector<string> s;
         while (token != NULL){ 
             s.push_back(token);
-            token = strtok(NULL, "|"); 
+            token = strtok(NULL, "*|?"); 
         } 
         
         insert(s, true);
@@ -40,7 +40,7 @@ void writeSeederToFile(){
 
     for(auto i:seedermap){
         for(auto j:i.second){
-            seeders<<i.first<<"|"<<j.first<<"|"<<j.second<<endl;
+            seeders<<i.first<<"*|?"<<j.first<<"*|?"<<j.second<<endl;
         }
     }
     seeders.close();
@@ -49,7 +49,7 @@ void writeSeederToFile(){
 
 void insert(vector<string> s, bool callfromfile){
   
-    string entry= s[0]+"|"+s[1]+"|"+s[2] ;
+    string entry= s[0]+"*|?"+s[1]+"*|?"+s[2] ;
   
     if(seedermap.find(s[0]) == seedermap.end() ){
         seedermap[s[0]][s[1]]=s[2];
