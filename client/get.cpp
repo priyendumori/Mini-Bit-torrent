@@ -45,13 +45,22 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     }while(rec_l>0);
     file.close();
     log("downloaded "+downpath);
-    cout<<"DOWNLOADED......"<<endl;
+    // cout<<"DOWNLOADED......"<<endl;
+    cout<<"SUCCESS: "+downpath<<endl;
     downloads[downpath]++;
 
     close(cl_sock);
 }
 
 void get(string mtorrentName, string downpath){
+    if(file_exists(downpath)){
+        cout<<"FAILURE: ALREADY_EXISTS"<<endl;
+        return;
+    }
+    if(!file_exists("./mTorrent/"+mtorrentName)){
+        cout<<"FAILURE: MTORRENT_FILE_NOT_FOUND"<<endl;
+        return;
+    }
     cout<<"in here"<<endl;
     string sendstring=getStringToSend(mtorrentName, 2);
     cout<<"s to send "<<sendstring<<endl;

@@ -25,7 +25,7 @@ int main(int argc, char **argv){
         string ccommand;
         for(int i=0;i<command.size();i++){
             if(command[i]=='\\'){
-                ccommand+=" ";
+                ccommand+=command[i+1];
                 i++;
             }
             else if(command[i]==' '){
@@ -46,15 +46,15 @@ int main(int argc, char **argv){
 
         if(s[0] == "share"){
             if(s.size()>=3) share(s[1], s[2]);
-            else    cout<<"invalid arguments"<<endl;
+            else    cout<<"FAILURE: INVALID_ARGUMENT"<<endl;
         }
         else if(s[0] == "get"){
             if(s.size()>=3) get(s[1], s[2]);
-            else    cout<<"invalid arguments"<<endl;
+            else    cout<<"FAILURE: INVALID_ARGUMENT"<<endl;
         }
         else if(s[0] == "remove"){
             if(s.size()>=2) removeTorrent(s[1]);
-            else    cout<<"invalid arguments"<<endl;
+            else    cout<<"FAILURE: INVALID_ARGUMENT"<<endl;
         }
         else if(s[0]=="exit"){
             closeClient();

@@ -4,6 +4,12 @@
 
 void removeTorrent(string mtorrentName){
     // cout<<"in remove"<<endl;
+
+    if(!file_exists("./mTorrent/"+mtorrentName)){
+        cout<<"FAILURE: FILE_NOT_FOUND"<<endl;
+        return;
+    }
+
     string sendstring=getStringToSend(mtorrentName, 1);
     // cout<<"s to send "<<sendstring<<endl;
     
@@ -18,5 +24,6 @@ void removeTorrent(string mtorrentName){
     mtorrentName="./mTorrent/"+mtorrentName;
     remove(mtorrentName.c_str());
     log(mtorrentName+" removed from file system ");
+    cout<<"SUCCESS: FILE_REMOVED"<<endl;
     close(sock);
 }

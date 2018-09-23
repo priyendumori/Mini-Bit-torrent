@@ -37,10 +37,15 @@ void notifyTracker(string mtorrentName){
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 
     // printf("%s\n",buffer );  
+    cout<<"SUCCESS: "+mtorrentName<<endl;
     close(sock);
 }
 
 void share(string filePath, string mtorrentName){
+    if(!file_exists(filePath)){
+        cout<<"FAILURE: FILE_NOT_FOUND"<<endl;
+        return;
+    }
     createTorrentFile(mtorrentName, filePath);
     notifyTracker(mtorrentName);
 }

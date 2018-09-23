@@ -37,3 +37,4 @@ void startListening();
 void closeClient();
 void notifyTracker(string );
 void show_down();
+bool file_exists(string );

@@ -18,6 +18,12 @@ void log(string s){
     logmtx.unlock();
 }
 
+bool file_exists(string name) {
+  struct stat buffer;   
+  return (stat (name.c_str(), &buffer) == 0); 
+}
+
+
 string getStringToSend(string mtorrentName, int type){
     mtorrentName="./mTorrent/"+mtorrentName;
     // cout<<"mt "<<mtorrentName<<endl;
