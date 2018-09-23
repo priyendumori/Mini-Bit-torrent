@@ -20,12 +20,15 @@ int main(int argc, char **argv)
         cout << "too few arguments" << endl;
         return 1;
     }
+    if (!file_exists("mTorrent"))
+    {
+        mkdir("mTorrent", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
     string client_IP_port = argv[1];
     string t1_IP_port = argv[2];
     string t2_IP_port = argv[3];
     logfile = argv[4];
     initializeGlobalVariables(client_IP_port, t1_IP_port, t2_IP_port);
-
     shareDetailsOfExistingTorrent();
     log("existing torrent information shared to tracker");
     thread t(startListening);
