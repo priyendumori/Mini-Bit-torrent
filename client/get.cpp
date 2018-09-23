@@ -66,7 +66,7 @@ void get(string mtorrentName, string downpath){
     cout<<"trying to read"<<endl;
     read( sock , buffer, 1024); 
     printf("buf %s\n",buffer );  
-
+    close(sock);
     vector<string> seeder;
     seeder = tokenize(buffer, "*|?");
     vector<pair<string,string> > seederpair;
@@ -85,6 +85,7 @@ void get(string mtorrentName, string downpath){
 
     string shareinfo=hash+"*|?"+clientIP+":"+clientPort+"*|?"+downpath+"*|?"+"0";
     cout<<"sadaaddfdsfd "<<shareinfo<<endl;
+    sock=create_socket("","",false);
     send(sock , shareinfo.c_str() , shareinfo.length() , 0 ); 
 
     downloads[downpath]=1;
