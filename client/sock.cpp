@@ -20,6 +20,7 @@ int create_socket(string ip, string port, bool connectToIP){
        
     // Convert IPv4 and IPv6 addresses from text to binary form 
     string sendIP;
+    
     if(connectToIP) sendIP=ip;
     else    sendIP=tracker1IP;
     if(inet_pton(AF_INET, sendIP.c_str() , &serv_addr.sin_addr)<=0)  

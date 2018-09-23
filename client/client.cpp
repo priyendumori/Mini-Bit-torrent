@@ -22,9 +22,25 @@ int main(int argc, char **argv){
         // cout<<"ready to take command "<<endl;
         getline(cin, command);
         // cout<<"cc "<<command<<endl;
-        
-        vector<string> s=tokenize(command, " ");
+        string ccommand;
+        for(int i=0;i<command.size();i++){
+            if(command[i]=='\\'){
+                ccommand+=" ";
+                i++;
+            }
+            else if(command[i]==' '){
+                ccommand+="*|?";
+            }
+            else{ 
+                ccommand+=command[i];
+            }
+            
+        }
 
+        // cout<<"command "<<command<<endl;
+        // cout<<"ccommand "<<ccommand<<endl;
+        vector<string> s=tokenize(ccommand, "*|?");
+        
         // cout<<"Sssssssssssss "<< s.size()<<endl;
         for(auto i:s) cout<<i<<endl;
 

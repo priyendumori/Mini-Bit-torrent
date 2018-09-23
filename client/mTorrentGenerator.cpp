@@ -20,7 +20,7 @@ void createTorrentFile(string torrentFileName, string filePath){
     mtfile<<tracker1IP<<":"<<tracker1Port<<endl;
     mtfile<<tracker2IP<<":"<<tracker2Port<<endl;
 
-    if(filePath[0]!='/'){
+    if(filePath[0]!='/' && filePath[0]!='~'){
         char buffer[1000];
         getcwd(buffer, 1000);
         cout<<buffer<<endl;

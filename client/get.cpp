@@ -15,7 +15,7 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
             path=temp;
         }
         if(i==3){
-            // cout<<"ddsfd "<<temp<<endl;
+            cout<<"ddsfd "<<temp<<endl;
             size=stoi(temp);
         }
     }
@@ -26,9 +26,10 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     string ip=token;
     token = strtok(NULL, ":"); 
     string port=token;
-    // cout<<"sending request to "<<ip<<":"<<port<<endl;
+    cout<<"sending request to gggt "<<ip<<":"<<port<<endl;
+    cout<<"sdgsgfsdgfd ip "<<ip<<" port "<<port<<endl;
     int cl_sock=create_socket(ip, port, true);
-    // cout<<"sending"<<endl;
+    cout<<"sending"<<endl;
     send(cl_sock , path.c_str() , path.length() , 0 );
 
     char buffer[524288]={0};
@@ -46,21 +47,21 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
 }
 
 void get(string mtorrentName, string downpath){
-    // cout<<"in here"<<endl;
+    cout<<"in here"<<endl;
     string sendstring=getStringToSend(mtorrentName, 2);
-    // cout<<"s to send "<<sendstring<<endl;
-    string hash = sendstring;
+    cout<<"s to send "<<sendstring<<endl;
+    string hash(sendstring);
     hash=hash.substr(0,hash.find_first_of("*|?"));
     cout<<"hash ......  "<<hash<<endl; 
     char buffer[1024] = {0};
     
     int sock=create_socket("","",false);
 
-    // cout<<"sending"<<endl;
+    cout<<"sending"<<endl;
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
-
+    cout<<"trying to read"<<endl;
     read( sock , buffer, 1024); 
-    // printf("buf %s\n",buffer );  
+    printf("buf %s\n",buffer );  
 
     vector<string> seeder;
     seeder = tokenize(buffer, "*|?");
@@ -70,7 +71,7 @@ void get(string mtorrentName, string downpath){
     }
     for(auto i:seederpair) cout<<i.first<<" "<<i.second<<endl;
 
-    if(downpath[0]!='/'){
+    if(downpath[0]!='/' && downpath[0]!='~'){
         char buffer[1000];
         getcwd(buffer, 1000);
         // cout<<buffer<<endl;
