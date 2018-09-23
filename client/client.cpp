@@ -12,8 +12,8 @@ int main(int argc, char **argv){
     logfile=argv[4];
     initializeGlobalVariables(client_IP_port, t1_IP_port, t2_IP_port);
 
-    // shareDetailsOfExistingTorrent();
-
+    shareDetailsOfExistingTorrent();
+    log("existing torrent information shared to tracker");
     thread t(startListening);
     t.detach();
 
@@ -45,13 +45,16 @@ int main(int argc, char **argv){
         for(auto i:s) cout<<i<<endl;
 
         if(s[0] == "share"){
-            share(s[1], s[2]);
+            if(s.size()>=3) share(s[1], s[2]);
+            else    cout<<"invalid arguments"<<endl;
         }
         else if(s[0] == "get"){
-            get(s[1], s[2]);
+            if(s.size()>=3) get(s[1], s[2]);
+            else    cout<<"invalid arguments"<<endl;
         }
         else if(s[0] == "remove"){
-            removeTorrent(s[1]);
+            if(s.size()>=2) removeTorrent(s[1]);
+            else    cout<<"invalid arguments"<<endl;
         }
         else if(s[0]=="exit"){
             closeClient();

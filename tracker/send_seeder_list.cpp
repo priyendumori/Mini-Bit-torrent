@@ -15,7 +15,9 @@ string getList(string hash){
 
 void sendSeederList(vector<string> s, int new_socket){
     string list = getList(s[0]);
+    log("sending seederlist for "+s[0]);
     send(new_socket , list.c_str() , list.length() , 0 );
+    log("seeder list sent");
     close(new_socket);
     return;
 } 

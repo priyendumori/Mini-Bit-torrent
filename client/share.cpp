@@ -21,7 +21,7 @@ void shareDetailsOfExistingTorrent(){
 
     }
     closedir(dirp);
-
+    log("details from mTorrent folder shared");
     // share details of each .mtorrent file to tracker
 }
 
@@ -31,7 +31,9 @@ void notifyTracker(string mtorrentName){
 
     int sock = create_socket("","",false);
     // cout<<"sending"<<endl;
+    log("sending request to notify tracker about "+mtorrentName);
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
+    log("tracker notified about "+mtorrentName);
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 
     // printf("%s\n",buffer );  

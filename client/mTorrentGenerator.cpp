@@ -14,6 +14,7 @@ void createTorrentFile(string torrentFileName, string filePath){
     ofstream mtfile;
     
     //cout<<endl<<endl<<filehash<<endl;
+    log("creating mtorrent file for "+filePath);
     string filehash=computeHash(filePath);
     torrentFileName="mTorrent/"+torrentFileName;
     mtfile.open(torrentFileName.c_str());
@@ -32,5 +33,5 @@ void createTorrentFile(string torrentFileName, string filePath){
     mtfile<<filehash;
 
     mtfile.close();
-
+    log("mtorrent file created for "+filePath);
 }

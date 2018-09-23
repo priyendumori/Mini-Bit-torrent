@@ -9,11 +9,14 @@ void removeTorrent(string mtorrentName){
     
     int sock=create_socket("","",false);
     // cout<<"sending"<<endl;
-    send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
+    log("remove request sent for "+mtorrentName);
+    send(sock , sendstring.c_str() , sendstring.length() , 0 );
+    log("entry corresponding to "+mtorrentName+" removed "); 
     // printf("Hello message sent\n"); 
     // valread = read( sock , buffer, 1024); 
     // printf("%s\n",buffer );  
     mtorrentName="./mTorrent/"+mtorrentName;
     remove(mtorrentName.c_str());
+    log(mtorrentName+" removed from file system ");
     close(sock);
 }

@@ -18,6 +18,7 @@ void log(string s){
     logger<<datetime<<" -> "; 
     logger<<s<<endl;
 
+    logger.close();
     logmtx.unlock();
 }
 
@@ -54,7 +55,7 @@ int main(int argc, char **argv){
     while(1){
         int new_socket;
         // cout<<"listening"<<endl;
-        log("listening");
+        // log("listening");
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
                         (socklen_t*)&addrlen))<0) 
         { 

@@ -19,6 +19,7 @@ string stringhash(string s){
 }
 
 string computeHash(string filePath){
+    log("calculating SHA1 of "+filePath);
     ifstream sharedfile;
     sharedfile.open(filePath.c_str(), ios::binary);
     size_t chunksize= 524288;
@@ -51,5 +52,6 @@ string computeHash(string filePath){
         // break;
     }
     sharedfile.close();
+    log("SHA1 calculated");
     return filehash;
 }

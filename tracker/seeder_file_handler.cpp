@@ -32,6 +32,7 @@ void loadSeederFromFile(){
     }
     seeders.close();
     mtx.unlock();
+    log("seeders loaded from file "+seeder_list);
 }
 
 void writeSeederToFile(){
@@ -45,6 +46,8 @@ void writeSeederToFile(){
     }
     seeders.close();
     mtx.unlock();
+
+    log("seeders loaded to the file "+seeder_list);
 }
 
 void insert(vector<string> s, bool callfromfile){
@@ -52,8 +55,10 @@ void insert(vector<string> s, bool callfromfile){
     string entry= s[0]+"*|?"+s[1]+"*|?"+s[2] ;
     cout<<"making entry for "<<entry<<endl;
     if(seedermap.find(s[0]) == seedermap.end() ){
+        log("entry added to map: "+entry);
         seedermap[s[0]][s[1]]=s[2];
         if(!callfromfile){
+            log("entry added to file: "+entry);
             seeders = getFileStream(0);
             seeders<< entry <<endl;
             seeders.close();
@@ -62,8 +67,10 @@ void insert(vector<string> s, bool callfromfile){
     }
     else{
         if(seedermap[s[0]].find(s[1]) == seedermap[s[0]].end() ){
+            log("entry added to map: "+entry);
             seedermap[s[0]][s[1]]=s[2];
             if(!callfromfile){
+                log("entry added to file: "+entry);
                 seeders = getFileStream(0);
                 seeders<< entry <<endl;
                 seeders.close();
@@ -76,6 +83,7 @@ void insert(vector<string> s, bool callfromfile){
 void remove(vector<string> s){
     if(seedermap.find(s[0]) != seedermap.end()){
         seedermap[s[0]].erase(s[1]);
+        log("removed from map: "+s[1]);
         if(seedermap[s[0]].size() == 0){
             seedermap.erase(s[0]);
         }
@@ -83,14 +91,14 @@ void remove(vector<string> s){
 
     writeSeederToFile();
 
-    cout<<"After remove"<<endl;
-    for(auto i:seedermap){
-        cout<<i.first<<":"<<endl;
-        for(auto j:i.second){
-            cout<<j.first<<" "<<j.second<<endl;
-        }
-        cout<<endl<<endl;
-    }
+    // cout<<"After remove"<<endl;
+    // for(auto i:seedermap){
+    //     cout<<i.first<<":"<<endl;
+    //     for(auto j:i.second){
+    //         cout<<j.first<<" "<<j.second<<endl;
+    //     }
+    //     cout<<endl<<endl;
+    // }
 }
 
 void clientOffLine(vector<string> s){
@@ -100,6 +108,7 @@ void clientOffLine(vector<string> s){
             cout<<"s "<<sock.first<<endl;
             cout<<"sk "<<s[0]<<endl;
             if(sock.first == s[0]){
+                log("removing from tracker: "+s[0]);
                 seedermap[l.first].erase(s[0]);
                 
                 if(seedermap[l.first].size() == 0){
@@ -111,12 +120,12 @@ void clientOffLine(vector<string> s){
 
     writeSeederToFile();
 
-    cout<<"After remove"<<endl;
-    for(auto i:seedermap){
-        cout<<i.first<<":"<<endl;
-        for(auto j:i.second){
-            cout<<j.first<<" "<<j.second<<endl;
-        }
-        cout<<endl<<endl;
-    }
+    // cout<<"After remove"<<endl;
+    // for(auto i:seedermap){
+    //     cout<<i.first<<":"<<endl;
+    //     for(auto j:i.second){
+    //         cout<<j.first<<" "<<j.second<<endl;
+    //     }
+    //     cout<<endl<<endl;
+    // }
 }

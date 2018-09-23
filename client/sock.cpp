@@ -12,6 +12,7 @@ int create_socket(string ip, string port, bool connectToIP){
         return -1; 
     } 
     // cout<<"sock fd created"<<endl;
+    log("socket created");
     memset(&serv_addr, '0', sizeof(serv_addr)); 
    
     serv_addr.sin_family = AF_INET; 
@@ -56,6 +57,7 @@ void startListening(){
         log("socket failed");
         exit(EXIT_FAILURE); 
     } 
+    log("socket created");
     //    cout<<"socket fd created"<<endl;
     // Forcefully attaching socket to the port 8080 
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
@@ -66,7 +68,7 @@ void startListening(){
         exit(EXIT_FAILURE); 
     } 
     // cout<<"setsocketopt"<<endl;
-
+    log("sock options set");
     address.sin_family = AF_INET; 
     address.sin_addr.s_addr = inet_addr(clientIP.c_str()); 
     address.sin_port = htons( atoi(clientPort.c_str()) ); 
@@ -80,12 +82,14 @@ void startListening(){
         exit(EXIT_FAILURE); 
     } 
     // cout<<"socket binded"<<endl;
+    log("socket binded");
     if (listen(server_fd, 3) < 0) 
     { 
         // perror("listen"); 
         log("listen error");
         exit(EXIT_FAILURE); 
     } 
+    log("listening at "+clientIP+":"+clientPort);
     cout<<"listening"<<endl;
 
     while(1){
@@ -101,16 +105,19 @@ void startListening(){
         log("request accepted "); 
         char buffer1[1024]={0};
         read( new_socket , buffer1, 1024);
+        string filePath(buffer1);
+        log("request to download "+filePath+" received ");
         cout<<"path   "<<buffer1<<endl;
 
         ifstream sharedfile;
         sharedfile.open(buffer1, ios::binary);
         size_t chunksize= 524288;
         char buffer[chunksize]; //reads only the first 1024 bytes
-        string filePath(buffer1);
+        
         long long size = getFileSize(filePath);
         size_t sizeLeftToSend=size;
 
+        log("sending data in chunks for "+filePath);
         if(sizeLeftToSend < chunksize) chunksize=sizeLeftToSend;
         while(sharedfile.read(buffer, chunksize)) {
             ///do with buffer
@@ -123,6 +130,7 @@ void startListening(){
             // break;
         }
         sharedfile.close();
+        log(filePath+" sent");
         close(new_socket);
     }
 }

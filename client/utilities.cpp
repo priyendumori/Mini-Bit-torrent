@@ -14,6 +14,7 @@ void log(string s){
     logger<<datetime<<" -> "; 
     logger<<s<<endl;
 
+    logger.close();
     logmtx.unlock();
 }
 

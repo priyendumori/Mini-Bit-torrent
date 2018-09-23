@@ -30,20 +30,21 @@ void download(vector<pair<string, string> > seederpair, string mtorrentName, str
     cout<<"sdgsgfsdgfd ip "<<ip<<" port "<<port<<endl;
     int cl_sock=create_socket(ip, port, true);
     cout<<"sending"<<endl;
+    log("path of file to be downloaded sent: "+path);
     send(cl_sock , path.c_str() , path.length() , 0 );
 
     char buffer[524288]={0};
     ofstream file;
     file.open(downpath);
     
-
+    log("download "+downpath+" starting");
     int rec_l;
     do{
         rec_l=read( cl_sock , buffer, 524288);
         file.write(buffer, rec_l);
     }while(rec_l>0);
     file.close();
-
+    log("downloaded "+downpath);
     cout<<"DOWNLOADED......"<<endl;
     downloads[downpath]++;
 
@@ -62,8 +63,10 @@ void get(string mtorrentName, string downpath){
     int sock=create_socket("","",false);
 
     cout<<"sending"<<endl;
+    log("sending request to get seeder list for "+mtorrentName);
     send(sock , sendstring.c_str() , sendstring.length() , 0 ); 
     cout<<"trying to read"<<endl;
+    log("seeder list received");
     read( sock , buffer, 1024); 
     printf("buf %s\n",buffer );  
     close(sock);
@@ -86,8 +89,9 @@ void get(string mtorrentName, string downpath){
     string shareinfo=hash+"*|?"+clientIP+":"+clientPort+"*|?"+downpath+"*|?"+"0";
     cout<<"sadaaddfdsfd "<<shareinfo<<endl;
     sock=create_socket("","",false);
+    log("request sent to add "+ clientIP +":"+clientPort +" as a seeder for "+downpath);
     send(sock , shareinfo.c_str() , shareinfo.length() , 0 ); 
-
+    log(clientIP +":"+clientPort + " seeds "+downpath+ " now");
     downloads[downpath]=1;
 
     thread t(download, seederpair, mtorrentName, downpath);

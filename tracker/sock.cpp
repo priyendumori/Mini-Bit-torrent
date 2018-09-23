@@ -18,6 +18,7 @@ void createSocket(){
         log("socket failed");
         exit(EXIT_FAILURE); 
     } 
+    log("socket created");
     //    cout<<"socket fd created"<<endl;
     // Forcefully attaching socket to the port 8080 
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
@@ -28,7 +29,7 @@ void createSocket(){
         exit(EXIT_FAILURE); 
     } 
     // cout<<"setsocketopt"<<endl;
-
+    log("socket options set");
     address.sin_family = AF_INET; 
     address.sin_addr.s_addr = inet_addr(mytrackerIP.c_str());//INADDR_ANY; 
     address.sin_port = htons( atoi(mytrackerport.c_str()) ); 
@@ -48,7 +49,7 @@ void createSocket(){
         log("listen error");
         exit(EXIT_FAILURE); 
     } 
-    
+    log("listening at "+mytrackerIP+":"+mytrackerport);
 }
 
 void serveRequest(int new_socket){
@@ -87,7 +88,7 @@ void serveRequest(int new_socket){
         clientOffLine(s);
     }
     else{
-        cout<<"here"<<endl;
+        cout<<"couldn't identify request"<<endl;
     }
     //insert(buffer, false);
     //remove(buffer);
