@@ -18,7 +18,7 @@ void log(string s){
 }
 
 string getStringToSend(string mtorrentName, int type){
-    mtorrentName="mTorrent/"+mtorrentName;
+    mtorrentName="./mTorrent/"+mtorrentName;
     // cout<<"mt "<<mtorrentName<<endl;
     string send;
     ifstream mt;
@@ -36,9 +36,9 @@ string getStringToSend(string mtorrentName, int type){
     }
     mt.close();
 
-    send=hashOfHash+"|";
-    send+=clientIP+":"+clientPort+"|";
-    send+=path+"|"+to_string(type);
+    send=hashOfHash+"*|?";
+    send+=clientIP+":"+clientPort+"*|?";
+    send+=path+"*|?"+to_string(type);
     cout<<"returning "<<send<<endl;
     return send;
 }
