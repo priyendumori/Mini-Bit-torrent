@@ -1,23 +1,34 @@
+/********************************************************************************/
+/*             Name: Priyendu Mori                                              */
+/*          Roll no: 2018201103                                                 */
+/********************************************************************************/
+
 #include "header.h"
 #include "trackerglobal.h"
 
-string getList(string hash){
+/*
+    takes a hash of hash of a file as input
+    and returns all the seeders for it
+*/
+string getList(string hash)
+{
     string list;
-    cout<<"hash "<<hash<<endl;
-    for(auto i:seedermap[hash]){
-        // for(auto j:i.second){
-            list+=i.first+"*|?"+i.second+"*|?";
-        // }
+    for (auto i : seedermap[hash])
+    {
+        list += i.first + "*|?" + i.second + "*|?";
     }
-    cout<<"returning "<<list<<endl;
     return list;
 }
 
-void sendSeederList(vector<string> s, int new_socket){
+/*
+    send the seeder list to the client requesting for it
+*/
+void sendSeederList(vector<string> s, int new_socket)
+{
     string list = getList(s[0]);
-    log("sending seederlist for "+s[0]);
-    send(new_socket , list.c_str() , list.length() , 0 );
+    log("sending seederlist for " + s[0]);
+    send(new_socket, list.c_str(), list.length(), 0);
     log("seeder list sent");
     close(new_socket);
     return;
-} 
+}

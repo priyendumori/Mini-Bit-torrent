@@ -1,136 +1,137 @@
+/********************************************************************************/
+/*             Name: Priyendu Mori                                              */
+/*          Roll no: 2018201103                                                 */
+/********************************************************************************/
+
 #include "header.h"
 #include "clientglobal.h"
 
-int create_socket(string ip, string port, bool connectToIP){
 
-    int sock = 0; 
-    struct sockaddr_in serv_addr; 
-    // char *hello = "shared..."; 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
-    { 
-        log("Socket creation error"); 
-        return -1; 
-    } 
-    // cout<<"sock fd created"<<endl;
+/*
+    creates a socket
+    and returns socket descriptor for it
+*/
+int create_socket(string ip, string port, bool connectToIP)
+{
+
+    int sock = 0;
+    struct sockaddr_in serv_addr;
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        log("Socket creation error");
+        return -1;
+    }
     log("socket created");
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
-   
-    serv_addr.sin_family = AF_INET; 
-    if(connectToIP) serv_addr.sin_port = htons(atoi(port.c_str())); 
-    else    serv_addr.sin_port = htons(atoi(tracker1Port.c_str())); 
-       
-    // Convert IPv4 and IPv6 addresses from text to binary form 
+    memset(&serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    if (connectToIP)
+        serv_addr.sin_port = htons(atoi(port.c_str()));
+    else
+        serv_addr.sin_port = htons(atoi(tracker1Port.c_str()));
+
     string sendIP;
-    
-    if(connectToIP) sendIP=ip;
-    else    sendIP=tracker1IP;
-    if(inet_pton(AF_INET, sendIP.c_str() , &serv_addr.sin_addr)<=0)  
-    { 
-        log("Invalid address/ Address not supported"); 
-        return -1; 
-    } 
-//    cout<<"inet pton"<<endl;
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
-    { 
-        log("Connection Failed"); 
-        return -1; 
-    } 
-    cout<<"connected"<<endl;
+
+    if (connectToIP)
+        sendIP = ip;
+    else
+        sendIP = tracker1IP;
+    if (inet_pton(AF_INET, sendIP.c_str(), &serv_addr.sin_addr) <= 0)
+    {
+        log("Invalid address/ Address not supported");
+        return -1;
+    }
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        log("Connection Failed");
+        return -1;
+    }
     log("connected");
     return sock;
 }
 
-void startListening(){
-    int server_fd; 
-    struct sockaddr_in address; 
+/*
+    makes client listen at port given during running
+    to handle download requests from other clients
+*/
+void startListening()
+{
+    int server_fd;
+    struct sockaddr_in address;
     int addrlen;
 
-    // int server_fd; 
-    // struct sockaddr_in address; 
-    int opt = 1; 
-    // int addrlen = sizeof(address); 
+    int opt = 1;
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+    {
 
-    // Creating socket file descriptor 
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
-    {   
-        // perror("socket failed"); 
         log("socket failed");
-        exit(EXIT_FAILURE); 
-    } 
+        exit(EXIT_FAILURE);
+    }
     log("socket created");
-    //    cout<<"socket fd created"<<endl;
-    // Forcefully attaching socket to the port 8080 
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
-                                                  &opt, sizeof(opt))) 
-    { 
-        // perror("setsockopt");
-        log("setsockopt error"); 
-        exit(EXIT_FAILURE); 
-    } 
-    // cout<<"setsocketopt"<<endl;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+                   &opt, sizeof(opt)))
+    {
+        log("setsockopt error");
+        exit(EXIT_FAILURE);
+    }
     log("sock options set");
-    address.sin_family = AF_INET; 
-    address.sin_addr.s_addr = inet_addr(clientIP.c_str()); 
-    address.sin_port = htons( atoi(clientPort.c_str()) ); 
-       
-    // Forcefully attaching socket to the port 8080 
-    if (bind(server_fd, (struct sockaddr *)&address,  
-                                 sizeof(address))<0) 
-    { 
-        // perror("bind failed"); 
-        log("bind failed");
-        exit(EXIT_FAILURE); 
-    } 
-    // cout<<"socket binded"<<endl;
-    log("socket binded");
-    if (listen(server_fd, 3) < 0) 
-    { 
-        // perror("listen"); 
-        log("listen error");
-        exit(EXIT_FAILURE); 
-    } 
-    log("listening at "+clientIP+":"+clientPort);
-    cout<<"listening"<<endl;
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = inet_addr(clientIP.c_str());
+    address.sin_port = htons(atoi(clientPort.c_str()));
 
-    while(1){
-        cout<<"in while";
+    if (bind(server_fd, (struct sockaddr *)&address,
+             sizeof(address)) < 0)
+    {
+        log("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    log("socket binded");
+    if (listen(server_fd, 3) < 0)
+    {
+        log("listen error");
+        exit(EXIT_FAILURE);
+    }
+    log("listening at " + clientIP + ":" + clientPort);
+
+    while (1)
+    {
         int new_socket;
-        if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
-                        (socklen_t*)&addrlen))<0) 
-        { 
-            // perror("accept"); 
+        if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
+                                 (socklen_t *)&addrlen)) < 0)
+        {
             log("error in accepting request");
-            exit(EXIT_FAILURE); 
+            exit(EXIT_FAILURE);
         }
-        log("request accepted "); 
-        char buffer1[1024]={0};
-        read( new_socket , buffer1, 1024);
+        log("request accepted ");
+        char buffer1[1024] = {0};
+        read(new_socket, buffer1, 1024);
         string filePath(buffer1);
-        log("request to download "+filePath+" received ");
-        cout<<"path   "<<buffer1<<endl;
+        log("request to download " + filePath + " received ");
 
         ifstream sharedfile;
         sharedfile.open(buffer1, ios::binary);
-        size_t chunksize= 524288;
-        char buffer[chunksize]; //reads only the first 1024 bytes
-        
+        size_t chunksize = 524288;
+        char buffer[chunksize];
+
         long long size = getFileSize(filePath);
-        size_t sizeLeftToSend=size;
+        size_t sizeLeftToSend = size;
 
-        log("sending data in chunks for "+filePath);
-        if(sizeLeftToSend < chunksize) chunksize=sizeLeftToSend;
-        while(sharedfile.read(buffer, chunksize)) {
-            ///do with buffer
-            sizeLeftToSend-=chunksize;
+        log("sending data in chunks for " + filePath);
+        if (sizeLeftToSend < chunksize)
+            chunksize = sizeLeftToSend;
+        while (sharedfile.read(buffer, chunksize))
+        {
+            sizeLeftToSend -= chunksize;
 
-            send(new_socket, buffer, chunksize ,0);
+            send(new_socket, buffer, chunksize, 0);
 
-            if(chunksize==0) break;
-            if(sizeLeftToSend<chunksize) chunksize=sizeLeftToSend;
-            // break;
+            if (chunksize == 0)
+                break;
+            if (sizeLeftToSend < chunksize)
+                chunksize = sizeLeftToSend;
         }
         sharedfile.close();
-        log(filePath+" sent");
+        log(filePath + " sent");
         close(new_socket);
     }
 }

@@ -1,9 +1,14 @@
+/********************************************************************************/
+/*             Name: Priyendu Mori                                              */
+/*          Roll no: 2018201103                                                 */
+/********************************************************************************/
+
 #include <fstream>
 #include <sys/stat.h>
 #include <openssl/sha.h>
 #include <iostream>
-#include <sys/socket.h> 
-#include <stdlib.h> 
+#include <sys/socket.h>
+#include <stdlib.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
@@ -16,14 +21,14 @@
 
 using namespace std;
 
-fstream getFileStream(int );
-void insert(vector<string> , bool );
-void remove(vector<string> );
-string getList(string );
-void sendSeederList(vector<string> , int );
+fstream getFileStream(int);
+void insert(vector<string>, bool);
+void remove(vector<string>);
+string getList(string);
+void sendSeederList(vector<string>, int);
 void createSocket();
-void serveRequest(int );
+void serveRequest(int);
 void writeSeederToFile();
 void loadSeederFromFile();
-void log(string );
-void clientOffLine(vector<string> );
+void log(string);
+void clientOffLine(vector<string>);
