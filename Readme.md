@@ -1,6 +1,6 @@
 # Mini Bit Torrent
 
-A mini p2p file sharing system.
+A Mini p2p file sharing system.
 
 ## Prerequisites
 We need following to generate SHA1 hash of the files.
